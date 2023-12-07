@@ -8,6 +8,7 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.OIConstants.ControllerDevice;
 import frc.robot.Devices.Controller;
+import frc.robot.commands.AutonomousTrajectoryRioCommand;
 import frc.robot.commands.Autos;
 import frc.robot.commands.DriveManuallyCommand;
 import frc.robot.commands.ExampleCommand;
@@ -18,7 +19,8 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.IMUSubsystem;
 import frc.robot.subsystems.SmartDashboardSubsystem;
-
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -26,6 +28,12 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import com.pathplanner.lib.PathConstraints;
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.PathPoint;
+import com.pathplanner.lib.auto.PIDConstants;
+import com.pathplanner.lib.auto.SwerveAutoBuilder;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -56,6 +64,9 @@ public class RobotContainer {
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
 
+  public SwerveAutoBuilder AutoBuilder;
+
+  private final SendableChooser<Command> autoChooser = new SendableChooser<>();
   
   private final Joystick m_driverController =
       new Joystick(OperatorConstants.kDriverControllerPort);
@@ -79,7 +90,12 @@ public class RobotContainer {
                       () -> getDriverYAxis(),
                       () -> getDriverOmegaAxis(),
                       () -> getDriverFieldCentric()));
-
+                      
+    SmartDashboard.putData("Choose Auto: ", autoChooser);
+        autoChooser.setDefaultOption("Do Nothing", new ZeroHeadingCommand());
+        autoChooser.addOption("ThreeMetersForward", new RunTrajectorySequenceRobotAtStartPoint("3MetersForward"));
+        autoChooser.addOption("ThreeMetersBackward", new RunTrajectorySequenceRobotAtStartPoint("3MetersBackward"));
+        autoChooser.addOption("1MeterSpin180", new RunTrajectorySequenceRobotAtStartPoint("1MeterSpin180"));
   }
 
   /**
@@ -379,6 +395,6 @@ private double getDriverXAxis() {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return Autos.exampleAuto(m_exampleSubsystem);
+    return autoChooser.getSelected();
   }
 }
