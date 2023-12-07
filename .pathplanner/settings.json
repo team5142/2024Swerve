@@ -3,12 +3,10 @@
   "robotLength": 1.0,
   "holonomicMode": true,
   "pathFolders": [
-    "New Folder"
+    "PathTesting"
   ],
   "autoFolders": [
-    "New Folder",
-    "New New Folder",
-    "New New New Folder"
+    "AutoTesting"
   ],
   "defaultMaxVel": 3.0,
   "defaultMaxAccel": 3.0,
