@@ -46,5 +46,8 @@
   },
   "reversed": false,
   "folder": "PathTesting",
-  "previewStartingState": null
+  "previewStartingState": {
+    "rotation": 0,
+    "velocity": 0
+  }
 }

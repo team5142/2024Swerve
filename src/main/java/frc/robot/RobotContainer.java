@@ -6,6 +6,7 @@ package frc.robot;
 
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.Constants.SwerveChassis;
 import frc.robot.Constants.OIConstants.ControllerDevice;
 import frc.robot.Devices.Controller;
 import frc.robot.commands.AutonomousTrajectoryRioCommand;
@@ -93,9 +94,9 @@ public class RobotContainer {
                       
     SmartDashboard.putData("Choose Auto: ", autoChooser);
         autoChooser.setDefaultOption("Do Nothing", new ZeroHeadingCommand());
-        autoChooser.addOption("ThreeMetersForward", new RunTrajectorySequenceRobotAtStartPoint("3MetersForward"));
-        autoChooser.addOption("ThreeMetersBackward", new RunTrajectorySequenceRobotAtStartPoint("3MetersBackward"));
-        autoChooser.addOption("1MeterSpin180", new RunTrajectorySequenceRobotAtStartPoint("1MeterSpin180"));
+        autoChooser.addOption("ThreeMetersForward", new RunTrajectorySequenceRobotAtStartPoint("3MetersForward", SwerveChassis.MAX_VELOCITY, SwerveChassis.MAX_ACCELERATION, false));
+        autoChooser.addOption("ThreeMetersBackward", new AutonomousTrajectoryRioCommand("3MetersBackward", SwerveChassis.MAX_VELOCITY, SwerveChassis.MAX_ACCELERATION));
+        autoChooser.addOption("1MeterSpin180", new AutonomousTrajectoryRioCommand("1MeterSpin180",  SwerveChassis.MAX_VELOCITY, SwerveChassis.MAX_ACCELERATION));
   }
 
   /**
